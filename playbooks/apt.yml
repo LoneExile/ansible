@@ -1,0 +1,10 @@
+---
+
+- hosts: "*"
+  become: yes
+  tasks:
+    - name: apt
+      apt:
+        update_cache: yes
+        upgrade: 'yes'
+      # when: ansible_distribution == "Ubuntu"
