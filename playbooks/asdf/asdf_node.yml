@@ -1,0 +1,38 @@
+
+---
+- name: Install ASDF and Node.js plugin on Ubuntu
+  hosts: all
+  tasks:
+    - name: Install required dependencies
+      apt:
+        name:
+          - dirmngr
+          - gpg
+          - gawk
+        state: present
+      become: true
+
+    - name: Install Node.js plugin
+      shell: |
+        source /home/{{ ansible_user_id }}/.asdf/asdf.sh
+        asdf plugin add nodejs
+      args:
+        executable: /usr/bin/zsh
+        creates: /home/{{ ansible_user_id }}/.asdf/plugins/nodejs
+      become_user: "{{ ansible_user_id }}"
+
+    - name: Install latest Node.js version
+      shell: |
+        source /home/{{ ansible_user_id }}/.asdf/asdf.sh
+        asdf install nodejs latest
+      args:
+        executable: /usr/bin/zsh
+      become_user: "{{ ansible_user_id }}"
+
+    - name: Set Node.js version as global
+      shell: |
+        source /home/{{ ansible_user_id }}/.asdf/asdf.sh
+        asdf global nodejs latest
+      args:
+        executable: /usr/bin/zsh
+      become_user: "{{ ansible_user_id }}"

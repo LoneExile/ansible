@@ -7,10 +7,6 @@
         name:
           - curl
           - git
-          - dirmngr
-          - gpg
-          - gawk
-          - zsh
         state: present
 
     - name: Clone ASDF
@@ -40,29 +36,3 @@
         - /home/{{ ansible_user_id }}/.bashrc
         - /home/{{ ansible_user_id }}/.zshrc
       become_user: "{{ ansible_user_id }}"
-
-    - name: Install Node.js plugin
-      shell: |
-        source /home/{{ ansible_user_id }}/.asdf/asdf.sh
-        asdf plugin add nodejs
-      args:
-        executable: /usr/bin/zsh
-        creates: /home/{{ ansible_user_id }}/.asdf/plugins/nodejs
-      become_user: "{{ ansible_user_id }}"
-
-    - name: Install latest Node.js version
-      shell: |
-        source /home/{{ ansible_user_id }}/.asdf/asdf.sh
-        asdf install nodejs latest
-      args:
-        executable: /usr/bin/zsh
-      become_user: "{{ ansible_user_id }}"
-
-    - name: Set Node.js version as global
-      shell: |
-        source /home/{{ ansible_user_id }}/.asdf/asdf.sh
-        asdf global nodejs latest
-      args:
-        executable: /usr/bin/zsh
-      become_user: "{{ ansible_user_id }}"
-

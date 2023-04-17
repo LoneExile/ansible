@@ -1,0 +1,38 @@
+
+---
+- name: Install ASDF and Go plugin on Ubuntu
+  hosts: all
+  tasks:
+    - name: Install required dependencies
+      apt:
+        name:
+          - dirmngr
+          - gpg
+          - gawk
+        state: present
+      become: true
+
+    - name: Install Go plugin
+      shell: |
+        source /home/{{ ansible_user_id }}/.asdf/asdf.sh
+        asdf plugin add golang
+      args:
+        executable: /usr/bin/zsh
+        creates: /home/{{ ansible_user_id }}/.asdf/plugins/golang
+      become_user: "{{ ansible_user_id }}"
+
+    - name: Install latest Go version
+      shell: |
+        source /home/{{ ansible_user_id }}/.asdf/asdf.sh
+        asdf install golang latest
+      args:
+        executable: /usr/bin/zsh
+      become_user: "{{ ansible_user_id }}"
+
+    - name: Set Go version as global
+      shell: |
+        source /home/{{ ansible_user_id }}/.asdf/asdf.sh
+        asdf global golang latest
+      args:
+        executable: /usr/bin/zsh
+      become_user: "{{ ansible_user_id }}"

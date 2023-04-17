@@ -1,0 +1,36 @@
+
+---
+- name: Install ASDF and Python plugin on Ubuntu
+  hosts: all
+  tasks:
+    - name: Install required dependencies
+      apt:
+        name:
+          - build-essential
+        state: present
+      become: true
+
+    - name: Install Python plugin
+      shell: |
+        source /home/{{ ansible_user_id }}/.asdf/asdf.sh
+        asdf plugin add python https://github.com/danhper/asdf-python.git
+      args:
+        executable: /usr/bin/zsh
+        creates: /home/{{ ansible_user_id }}/.asdf/plugins/python
+      become_user: "{{ ansible_user_id }}"
+
+    - name: Install latest python version
+      shell: |
+        source /home/{{ ansible_user_id }}/.asdf/asdf.sh
+        asdf install python latest 
+      args:
+        executable: /usr/bin/zsh
+      become_user: "{{ ansible_user_id }}"
+
+    - name: Set Python version as global
+      shell: |
+        source /home/{{ ansible_user_id }}/.asdf/asdf.sh
+        asdf global python latest
+      args:
+        executable: /usr/bin/zsh
+      become_user: "{{ ansible_user_id }}"

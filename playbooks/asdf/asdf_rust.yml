@@ -1,0 +1,38 @@
+
+---
+- name: Install ASDF and Rust plugin on Ubuntu
+  hosts: all
+  tasks:
+    - name: Install required dependencies
+      apt:
+        name:
+          - dirmngr
+          - gpg
+          - gawk
+        state: present
+      become: true
+
+    - name: Install Rust plugin
+      shell: |
+        source /home/{{ ansible_user_id }}/.asdf/asdf.sh
+        asdf plugin add rust
+      args:
+        executable: /usr/bin/zsh
+        creates: /home/{{ ansible_user_id }}/.asdf/plugins/rust
+      become_user: "{{ ansible_user_id }}"
+
+    - name: Install latest Rust version
+      shell: |
+        source /home/{{ ansible_user_id }}/.asdf/asdf.sh
+        asdf install rust latest
+      args:
+        executable: /usr/bin/zsh
+      become_user: "{{ ansible_user_id }}"
+
+    - name: Set Rust version as global
+      shell: |
+        source /home/{{ ansible_user_id }}/.asdf/asdf.sh
+        asdf global rust latest
+      args:
+        executable: /usr/bin/zsh
+      become_user: "{{ ansible_user_id }}"
