@@ -10,5 +10,13 @@
         - curl
         - git
         - wget
+        - nnn
+        - bat
+        - tree
+        - fzf
+        - jq
+        - xclip
+        - coreutils
+        - build-essential
         state: latest
         update_cache: true
