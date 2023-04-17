@@ -1,6 +1,6 @@
 
 ---
-- name: Install ASDF and Rust plugin on Ubuntu
+- name: Install Rust plugin on Ubuntu
   hosts: all
   tasks:
     - name: Install required dependencies

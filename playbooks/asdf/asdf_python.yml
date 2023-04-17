@@ -41,6 +41,7 @@
       shell: |
         source /home/{{ ansible_user_id }}/.asdf/asdf.sh
         asdf global python latest
+        pip3 install --upgrade pip
       args:
         executable: /usr/bin/zsh
       become_user: "{{ ansible_user_id }}"

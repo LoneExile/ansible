@@ -11,9 +11,6 @@
           - software-properties-common
           - lsb-release
           - gnupg
-          # - python3-pip
-          # - virtualenv
-          # - python3-setuptools
         state: latest
         update_cache: true
       become: true
@@ -51,16 +48,6 @@
       command: docker info
       become: true
 
-    - name: Check if docker-compose is installed
-      shell: |
-        source /home/bun/.asdf/asdf.sh
-        pip3 show docker-compose
-      args:
-        executable: /usr/bin/zsh
-      register: docker_compose_check
-      become_user: "{{ ansible_user_id }}"
-      ignore_errors: true
-
     - name: Install Docker Compose using ASDF Python
       shell: |
         source /home/{{ ansible_user_id }}/.asdf/asdf.sh
@@ -68,7 +55,6 @@
       args:
         executable: /usr/bin/zsh
       become_user: "{{ ansible_user_id }}"
-      when: docker_compose_check.rc != 0
 
   handlers:
     - name: restart docker
