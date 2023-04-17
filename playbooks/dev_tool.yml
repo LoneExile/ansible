@@ -1,0 +1,14 @@
+
+---
+- hosts: all
+  become: true
+  tasks:
+
+    - name: Install dev base packages
+      apt:
+        pkg:
+        - curl
+        - git
+        - wget
+        state: latest
+        update_cache: true
