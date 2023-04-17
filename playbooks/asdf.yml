@@ -1,0 +1,68 @@
+---
+- name: Install ASDF and Node.js plugin on Ubuntu
+  hosts: all
+  tasks:
+    - name: Install required dependencies
+      apt:
+        name:
+          - curl
+          - git
+          - dirmngr
+          - gpg
+          - gawk
+          - zsh
+        state: present
+
+    - name: Clone ASDF
+      git:
+        repo: https://github.com/asdf-vm/asdf.git
+        dest: /home/{{ ansible_user_id }}/.asdf
+        version: v0.11.3
+      become_user: "{{ ansible_user_id }}"
+
+    - name: ensure .zshrc exists
+      file:
+        path: /home/{{ ansible_user_id }}/.zshrc
+        state: touch
+        owner: "{{ ansible_user_id }}"
+        group: "{{ ansible_user_id }}"
+        mode: 0644
+
+    - name: Add ASDF to .bashrc and .zshrc
+      blockinfile:
+        path: "{{ item }}"
+        block: |
+          # Add ASDF to PATH
+          . /home/{{ ansible_user_id }}/.asdf/asdf.sh
+          # Add ASDF completions
+          . /home/{{ ansible_user_id }}/.asdf/completions/asdf.bash
+      with_items:
+        - /home/{{ ansible_user_id }}/.bashrc
+        - /home/{{ ansible_user_id }}/.zshrc
+      become_user: "{{ ansible_user_id }}"
+
+    - name: Install Node.js plugin
+      shell: |
+        source /home/{{ ansible_user_id }}/.asdf/asdf.sh
+        asdf plugin add nodejs
+      args:
+        executable: /usr/bin/zsh
+        creates: /home/{{ ansible_user_id }}/.asdf/plugins/nodejs
+      become_user: "{{ ansible_user_id }}"
+
+    - name: Install latest Node.js version
+      shell: |
+        source /home/{{ ansible_user_id }}/.asdf/asdf.sh
+        asdf install nodejs latest
+      args:
+        executable: /usr/bin/zsh
+      become_user: "{{ ansible_user_id }}"
+
+    - name: Set Node.js version as global
+      shell: |
+        source /home/{{ ansible_user_id }}/.asdf/asdf.sh
+        asdf global nodejs latest
+      args:
+        executable: /usr/bin/zsh
+      become_user: "{{ ansible_user_id }}"
+

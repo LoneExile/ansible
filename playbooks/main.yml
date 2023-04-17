@@ -3,6 +3,7 @@
 - import_playbook: apt.yml
 - import_playbook: zsh.yml
 - import_playbook: dev_tool.yml
+- import_playbook: asdf.yml
 - import_playbook: docker.yml
 
 
