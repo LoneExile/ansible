@@ -4,6 +4,22 @@
   hosts: all
   tasks:
 
+    - name: Install required build dependencies for Python
+      apt:
+        name:
+          - build-essential
+          - zlib1g-dev
+          - libncurses5-dev
+          - libgdbm-dev
+          - libnss3-dev
+          - libssl-dev
+          - libreadline-dev
+          - libffi-dev
+          - libsqlite3-dev
+          - libbz2-dev
+        state: present
+      become: true
+
     - name: Install Python plugin
       shell: |
         source /home/{{ ansible_user_id }}/.asdf/asdf.sh
