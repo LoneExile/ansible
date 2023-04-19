@@ -21,10 +21,10 @@
         creates: /home/{{ ansible_user_id }}/.asdf/plugins/rust
       become_user: "{{ ansible_user_id }}"
 
-    - name: Install latest Rust version
+    - name: Install {{ rust_version }} Rust version
       shell: |
         source /home/{{ ansible_user_id }}/.asdf/asdf.sh
-        asdf install rust latest
+        asdf install rust {{ rust_version }}
       args:
         executable: /usr/bin/zsh
       become_user: "{{ ansible_user_id }}"
@@ -32,7 +32,7 @@
     - name: Set Rust version as global
       shell: |
         source /home/{{ ansible_user_id }}/.asdf/asdf.sh
-        asdf global rust latest
+        asdf global rust {{ rust_version }}
       args:
         executable: /usr/bin/zsh
       become_user: "{{ ansible_user_id }}"

@@ -12,6 +12,10 @@
         state: present
       become: true
 
+    - name: Debug nodejs_version
+      debug:
+        var: nodejs_version
+
     - name: Install Node.js plugin
       shell: |
         source /home/{{ ansible_user_id }}/.asdf/asdf.sh
@@ -21,10 +25,10 @@
         creates: /home/{{ ansible_user_id }}/.asdf/plugins/nodejs
       become_user: "{{ ansible_user_id }}"
 
-    - name: Install latest Node.js version
+    - name: Install {{ nodejs_version }} Node.js version
       shell: |
         source /home/{{ ansible_user_id }}/.asdf/asdf.sh
-        asdf install nodejs latest
+        asdf install nodejs {{ nodejs_version }}
       args:
         executable: /usr/bin/zsh
       become_user: "{{ ansible_user_id }}"
@@ -32,7 +36,7 @@
     - name: Set Node.js version as global
       shell: |
         source /home/{{ ansible_user_id }}/.asdf/asdf.sh
-        asdf global nodejs latest
+        asdf global nodejs {{ nodejs_version }}
       args:
         executable: /usr/bin/zsh
       become_user: "{{ ansible_user_id }}"

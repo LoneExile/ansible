@@ -21,10 +21,10 @@
         creates: /home/{{ ansible_user_id }}/.asdf/plugins/golang
       become_user: "{{ ansible_user_id }}"
 
-    - name: Install latest Go version
+    - name: Install {{ go_version }} Go version
       shell: |
         source /home/{{ ansible_user_id }}/.asdf/asdf.sh
-        asdf install golang latest
+        asdf install golang {{ go_version }}
       args:
         executable: /usr/bin/zsh
       become_user: "{{ ansible_user_id }}"
@@ -32,7 +32,7 @@
     - name: Set Go version as global
       shell: |
         source /home/{{ ansible_user_id }}/.asdf/asdf.sh
-        asdf global golang latest
+        asdf global golang {{ go_version }}
       args:
         executable: /usr/bin/zsh
       become_user: "{{ ansible_user_id }}"

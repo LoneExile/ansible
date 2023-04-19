@@ -16,6 +16,9 @@ ansible all -m gather_facts | grep ansible_distribution
 # run playbook
 ansible-playbook --ask-become-pass playbooks/main.yml --user loneexile
 
+# run playbook with variables
+ansible-playbook --ask-become-pass playbooks/main.yml --user loneexile -e "@variables.yml"
+
 ```
 
 `import_playbook`: This directive is used to include another playbook at the top
