@@ -27,6 +27,8 @@ does not support conditionals or loops
 
 ---
 
+## SSH
+
 ```bash
 # incase don't have openssh-server installed
 sudo apt install openssh-server
@@ -45,4 +47,16 @@ sudo service ssh restart
 
 # e.g.
 ## ssh username@ip -p1337
+```
+
+---
+
+```bash
+# use nmap to scan network
+sudo nmap -sn 192.168.1.0/24
+
+# install portainer
+docker run -d -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
+
+
 ```

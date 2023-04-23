@@ -2,3 +2,5 @@ nodejs_version: latest
 python_version: latest
 go_version: latest
 rust_version: latest
+lazydocker_version: latest
+# ansible_user_id: opi

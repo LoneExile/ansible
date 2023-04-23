@@ -1,0 +1,28 @@
+---
+- name: Install Cloudflared
+  hosts: all
+  become: true
+  tasks:
+    - name: Ensure Cloudflare GPG key directory exists
+      ansible.builtin.file:
+        path: /usr/share/keyrings
+        state: directory
+        mode: '0755'
+
+    - name: Add Cloudflare GPG key
+      ansible.builtin.shell:
+        cmd: |
+          curl -fsSL https://pkg.cloudflare.com/cloudflare-main.gpg | tee /usr/share/keyrings/cloudflare-main.gpg >/dev/null
+
+    - name: Add Cloudflared repository
+      ansible.builtin.apt_repository:
+        repo: "deb [signed-by=/usr/share/keyrings/cloudflare-main.gpg] https://pkg.cloudflare.com/cloudflared jammy main"
+        state: present
+        filename: cloudflared
+
+    - name: Update apt cache and install Cloudflared
+      ansible.builtin.apt:
+        name: cloudflared
+        state: latest
+        update_cache: yes
+

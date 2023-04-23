@@ -1,0 +1,38 @@
+
+---
+- name: Install Lazydocker plugin on Ubuntu
+  hosts: all
+  tasks:
+    - name: Install required dependencies
+      apt:
+        name:
+          - dirmngr
+          - gpg
+          - gawk
+        state: present
+      become: true
+
+    - name: Install Lazydocker plugin
+      shell: |
+        source /home/{{ ansible_user_id }}/.asdf/asdf.sh
+        asdf plugin add lazydocker https://github.com/comdotlinux/asdf-lazydocker.git
+      args:
+        executable: /usr/bin/zsh
+        creates: /home/{{ ansible_user_id }}/.asdf/plugins/lazydocker
+      become_user: "{{ ansible_user_id }}"
+
+    - name: Install {{ lazydocker_version }} Lazydocker version
+      shell: |
+        source /home/{{ ansible_user_id }}/.asdf/asdf.sh
+        asdf install lazydocker {{ lazydocker_version }}
+      args:
+        executable: /usr/bin/zsh
+      become_user: "{{ ansible_user_id }}"
+
+    - name: Set Lazydocker version as global
+      shell: |
+        source /home/{{ ansible_user_id }}/.asdf/asdf.sh
+        asdf global lazydocker {{ lazydocker_version }}
+      args:
+        executable: /usr/bin/zsh
+      become_user: "{{ ansible_user_id }}"

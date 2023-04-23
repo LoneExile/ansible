@@ -18,5 +18,6 @@
         - xclip
         - coreutils
         - build-essential
+        - vim
         state: latest
         update_cache: true
