@@ -1,0 +1,48 @@
+---
+- name: Deploy Filebrowser using Docker
+  hosts: all
+  become: true
+  tasks:
+    - name: Gather user and group ID
+      command: id -u "{{ ansible_user_id }}"
+      register: user_id
+      changed_when: false
+    - command: id -g "{{ ansible_user_id }}"
+      register: group_id
+      changed_when: false
+
+    - name: Create Filebrowser directories
+      ansible.builtin.file:
+        path: "{{ ansible_env.HOME }}/filebrowser/{{ item }}"
+        state: directory
+        owner: "{{ user_id.stdout }}"
+        group: "{{ group_id.stdout }}"
+        mode: '0755'
+      loop:
+        - root
+        - config
+        - database
+
+    - name: Create .filebrowser.json configuration file
+      ansible.builtin.copy:
+        content: "{}"
+        dest: "{{ ansible_env.HOME }}/filebrowser/config/.filebrowser.json"
+        owner: "{{ user_id.stdout }}"
+        group: "{{ group_id.stdout }}"
+        mode: '0644'
+        force: no
+
+    - name: Run Filebrowser Docker container
+      community.docker.docker_container:
+        name: filebrowser
+        image: filebrowser/filebrowser
+        state: started
+        restart_policy: always
+        published_ports:
+          - "8080:80"
+        volumes:
+          - "{{ ansible_env.HOME }}/filebrowser/root:/srv"
+          - "{{ ansible_env.HOME }}/filebrowser/database/database.db:/database.db"
+          - "{{ ansible_env.HOME }}/filebrowser/config/.filebrowser.json:/.filebrowser.json"
+        user: "{{ user_id.stdout }}:{{ group_id.stdout }}"
+

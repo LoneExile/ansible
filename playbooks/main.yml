@@ -12,8 +12,12 @@
 - import_playbook: asdf/asdf_lazydocker.yml
 - import_playbook: btop.yml
 - import_playbook: neovim.yml
+- import_playbook: containers/portainer.yml
+- import_playbook: containers/minio.yml
+- import_playbook: containers/minio_mc.yml
+- import_playbook: containers/filebrowser.yml
 
-# - import_playbook: portainer.yml
+
 # - import_playbook: cloudflare.yml
 
 

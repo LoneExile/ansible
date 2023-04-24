@@ -3,6 +3,7 @@
 Personal playbook configuration for my development evironment.
 
 ```bash
+ansible-galaxy collection install community.docker
 
 # ping all hosts
 ansible all --key-file ~/.ssh/ansible -i inventory -m ping --user loneexile

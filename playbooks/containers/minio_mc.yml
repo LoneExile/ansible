@@ -1,0 +1,55 @@
+---
+- name: Install MinIO Client (mc) on the host machine
+  hosts: all
+  become: false
+  tasks:
+    - name: Create minio-binaries directory
+      ansible.builtin.file:
+        path: "{{ ansible_env.HOME }}/minio-binaries"
+        state: directory
+        owner: "{{ ansible_user_id }}"
+        group: "{{ ansible_user_id }}"
+        mode: '0755'
+
+    - name: Download and install mc for 64-bit Intel (amd64)
+      block:
+        - name: Download mc
+          ansible.builtin.get_url:
+            url: https://dl.min.io/client/mc/release/linux-amd64/mc
+            dest: "{{ ansible_env.HOME }}/minio-binaries/mc"
+            mode: '0755'
+
+        - name: Add mc to Bash PATH
+          ansible.builtin.lineinfile:
+            path: "{{ ansible_env.HOME }}/.bashrc"
+            line: 'export PATH=$PATH:$HOME/minio-binaries/'
+            create: yes
+
+        - name: Add mc to Zsh PATH
+          ansible.builtin.lineinfile:
+            path: "{{ ansible_env.HOME }}/.zshrc"
+            line: 'export PATH=$PATH:$HOME/minio-binaries/'
+            create: yes
+      when: ansible_architecture == 'x86_64'
+
+    - name: Download and install mc for ARM64
+      block:
+        - name: Download mc
+          ansible.builtin.get_url:
+            url: https://dl.min.io/client/mc/release/linux-arm64/mc
+            dest: "{{ ansible_env.HOME }}/minio-binaries/mc"
+            mode: '0755'
+
+        - name: Add mc to Bash PATH
+          ansible.builtin.lineinfile:
+            path: "{{ ansible_env.HOME }}/.bashrc"
+            line: 'export PATH=$PATH:$HOME/minio-binaries/'
+            create: yes
+
+        - name: Add mc to Zsh PATH
+          ansible.builtin.lineinfile:
+            path: "{{ ansible_env.HOME }}/.zshrc"
+            line: 'export PATH=$PATH:$HOME/minio-binaries/'
+            create: yes
+      when: ansible_architecture == 'aarch64'
+
