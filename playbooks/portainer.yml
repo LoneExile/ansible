@@ -1,18 +1,22 @@
 ---
 - hosts: all
-  # vars:
-  #   ansible_python_interpreter: /home/{{ ansible_user_id }}/.asdf/shims/python3
-  #   ansible_pip_executable: /home/{{ ansible_user_id }}/.asdf/shims/pip3
   tasks:
-    - name: Deploy Portainer container
-      ansible.builtin.docker_container:
-        name: portainer
-        image: portainer/portainer-ce:latest
-        state: started
-        restart_policy: always
-        ports:
-          - "9000:9000"
-        volumes:
-          - "/var/run/docker.sock:/var/run/docker.sock"
-          - "portainer_data:/data"
-      become_user: "{{ ansible_user_id }}"
+
+  - name: Set Python interpreter
+    set_fact:
+      ansible_python_interpreter: /home/{{ ansible_user_id }}/.asdf/shims/python3
+      ansible_pip_executable: /home/{{ ansible_user_id }}/.asdf/shims/pip3
+
+  - name: Deploy Portainer container
+    ansible.builtin.docker_container:
+      name: portainer
+      image: portainer/portainer-ce:latest
+      state: started
+      restart_policy: always
+      ports:
+        - "9000:9000"
+      volumes:
+        - "/var/run/docker.sock:/var/run/docker.sock"
+        - "portainer_data:/data"
+    become_user: "{{ ansible_user_id }}"
+
