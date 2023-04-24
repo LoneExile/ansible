@@ -31,6 +31,11 @@ does not support conditionals or loops
 ## SSH
 
 ```bash
+# generate ssh key
+ssh-keygen -t ed25519 -C "ansible"
+# copy to remote host
+ssh-copy-id -i ~/.ssh/ansible.pub user@192.168.1.1
+
 # incase don't have openssh-server installed
 sudo apt install openssh-server
 
