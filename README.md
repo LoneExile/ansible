@@ -58,16 +58,22 @@ sudo service ssh restart
 ---
 
 ```bash
-# use nmap to scan network
+## use nmap to scan network
 sudo nmap -sn 192.168.1.0/24
 
-# install portainer
+## install portainer
 docker run -d -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
 
-# check what is using port 53
+## check what is using port 53
 sudo lsof -i :53
-# stop service
+## stop service
 sudo systemctl stop servicename
+# sudo systemctl stop systemd-resolved
+
+sudo vi /etc/resolv.conf
+# nameserver 1.1.1.1
+
+
 
 # install tailscale # SUBNET e.g. 192.168.1.0/24
 sudo docker run -d --name=tailscaled -v /var/lib:/var/lib -v /dev/net/tun:/dev/net/tun --network=host --cap-add=NET_ADMIN --cap-add=NET_RAW --env TS_AUTHKEY=[AUTH KEY] --env TS_EXTRA_ARGS=--advertise-exit-node --env TS_ROUTES=[SUBNET] tailscale/tailscale

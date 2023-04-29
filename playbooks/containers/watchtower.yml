@@ -1,0 +1,18 @@
+---
+- name: Deploy Watchtower container for ARM64-based SBC
+  hosts: all
+  tasks:
+    - name: Ensure Watchtower Docker image is installed (ARM64 version)
+      ansible.builtin.docker_image:
+        name: containrrr/watchtower:latest
+        source: pull
+
+    - name: Deploy Watchtower Docker container
+      ansible.builtin.docker_container:
+        name: watchtower
+        image: containrrr/watchtower:latest
+        state: started
+        # command: --interval 30 # 30 seconds
+        command: --interval 86400 # 1 day
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock
