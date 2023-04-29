@@ -29,3 +29,12 @@
             source: '{{ ansible_env.HOME }}/jellyfin'
             target: /media
         restart_policy: unless-stopped
+
+    - name: Configure GPU memory for hardware acceleration
+      ansible.builtin.lineinfile:
+        path: /boot/config.txt
+        regexp: '^gpu_mem='
+        line: 'gpu_mem=256' # Change this value to 256 for Raspberry Pi 3 or 320 for Raspberry Pi 4
+        state: present
+      become: yes
+      when: ansible_nodename == "raspberrypi"
