@@ -1,0 +1,31 @@
+---
+- name: Deploy Jellyfin container
+  hosts: all
+  tasks:
+    - name: Ensure Jellyfin directories exist
+      ansible.builtin.file:
+        path: '{{ item }}'
+        state: directory
+        owner: '{{ ansible_user_id }}'
+        group: '{{ ansible_user_id }}'
+      with_items:
+        - '{{ ansible_env.HOME }}/jellyfin'
+        - '{{ ansible_env.HOME }}/jellyfin/config'
+        - '{{ ansible_env.HOME }}/jellyfin/cache'
+        - '{{ ansible_env.HOME }}/jellyfin/media'
+
+    - name: Deploy Jellyfin Docker container
+      ansible.builtin.docker_container:
+        name: jellyfin
+        image: jellyfin/jellyfin
+        state: started
+        user: '{{ ansible_user_uid }}:{{ ansible_user_gid }}'
+        network_mode: host
+        volumes:
+          - '{{ ansible_env.HOME }}/jellyfin/config:/config'
+          - '{{ ansible_env.HOME }}/jellyfin/cache:/cache'
+        mounts:
+          - type: bind
+            source: '{{ ansible_env.HOME }}/jellyfin'
+            target: /media
+        restart_policy: unless-stopped

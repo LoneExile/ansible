@@ -1,0 +1,34 @@
+---
+- name: Install packages and update system
+  hosts: all
+  become: true
+  tasks:
+    - name: Add liujianfeng1994/panfork-mesa PPA
+      ansible.builtin.apt_repository:
+        repo: 'ppa:liujianfeng1994/panfork-mesa'
+        state: present
+      when: ansible_nodename == "orangepi5"
+
+    - name: Add liujianfeng1994/rockchip-multimedia PPA
+      ansible.builtin.apt_repository:
+        repo: 'ppa:liujianfeng1994/rockchip-multimedia'
+        state: present
+      when: ansible_nodename == "orangepi5"
+
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: yes
+      when: ansible_nodename == "orangepi5"
+
+    - name: Perform system dist-upgrade
+      ansible.builtin.apt:
+        upgrade: dist
+      when: ansible_nodename == "orangepi5"
+
+    - name: Install required packages
+      ansible.builtin.apt:
+        name:
+          - mali-g610-firmware
+          - rockchip-multimedia-config
+        state: present
+      when: ansible_nodename == "orangepi5"
