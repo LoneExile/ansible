@@ -1,4 +1,3 @@
-
 ---
 - name: Install Rust plugin on Ubuntu
   hosts: all
@@ -19,7 +18,7 @@
       args:
         executable: /usr/bin/zsh
         creates: /home/{{ ansible_user_id }}/.asdf/plugins/rust
-      become_user: "{{ ansible_user_id }}"
+      become_user: '{{ ansible_user_id }}'
 
     - name: Install {{ rust_version }} Rust version
       shell: |
@@ -27,7 +26,7 @@
         asdf install rust {{ rust_version }}
       args:
         executable: /usr/bin/zsh
-      become_user: "{{ ansible_user_id }}"
+      become_user: '{{ ansible_user_id }}'
 
     - name: Set Rust version as global
       shell: |
@@ -35,4 +34,4 @@
         asdf global rust {{ rust_version }}
       args:
         executable: /usr/bin/zsh
-      become_user: "{{ ansible_user_id }}"
+      become_user: '{{ ansible_user_id }}'

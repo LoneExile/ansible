@@ -14,19 +14,19 @@
         repo: https://github.com/asdf-vm/asdf.git
         dest: /home/{{ ansible_user_id }}/.asdf
         version: v0.11.3
-      become_user: "{{ ansible_user_id }}"
+      become_user: '{{ ansible_user_id }}'
 
     - name: ensure .zshrc exists
       file:
         path: /home/{{ ansible_user_id }}/.zshrc
         state: touch
-        owner: "{{ ansible_user_id }}"
-        group: "{{ ansible_user_id }}"
+        owner: '{{ ansible_user_id }}'
+        group: '{{ ansible_user_id }}'
         mode: 0644
 
     - name: Add ASDF to .bashrc and .zshrc
       blockinfile:
-        path: "{{ item }}"
+        path: '{{ item }}'
         block: |
           # Add ASDF to PATH
           . /home/{{ ansible_user_id }}/.asdf/asdf.sh
@@ -35,4 +35,4 @@
       with_items:
         - /home/{{ ansible_user_id }}/.bashrc
         - /home/{{ ansible_user_id }}/.zshrc
-      become_user: "{{ ansible_user_id }}"
+      become_user: '{{ ansible_user_id }}'

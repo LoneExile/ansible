@@ -29,8 +29,8 @@
 
     - name: Build and install Neovim
       command:
-        cmd: "{{ item }}"
-        chdir: "/tmp/neovim"
+        cmd: '{{ item }}'
+        chdir: '/tmp/neovim'
       loop:
         - 'make CMAKE_BUILD_TYPE=Release'
         - 'make install'

@@ -16,7 +16,7 @@
 
     - name: Add Cloudflared repository
       ansible.builtin.apt_repository:
-        repo: "deb [signed-by=/usr/share/keyrings/cloudflare-main.gpg] https://pkg.cloudflare.com/cloudflared jammy main"
+        repo: 'deb [signed-by=/usr/share/keyrings/cloudflare-main.gpg] https://pkg.cloudflare.com/cloudflared jammy main'
         state: present
         filename: cloudflared
 
@@ -25,4 +25,3 @@
         name: cloudflared
         state: latest
         update_cache: yes
-

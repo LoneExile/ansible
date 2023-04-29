@@ -2,11 +2,6 @@
 - hosts: all
   tasks:
 
-  - name: Set Python interpreter
-    set_fact:
-      ansible_python_interpreter: /home/{{ ansible_user_id }}/.asdf/shims/python3
-      ansible_pip_executable: /home/{{ ansible_user_id }}/.asdf/shims/pip3
-
   - name: Deploy Portainer container
     ansible.builtin.docker_container:
       name: portainer

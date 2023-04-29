@@ -1,23 +1,21 @@
-
 ---
 - hosts: all
   become: true
   tasks:
-
     - name: Install dev base packages
       apt:
         pkg:
-        - curl
-        - git
-        - wget
-        - nnn
-        - bat
-        - tree
-        - fzf
-        - jq
-        - xclip
-        - coreutils
-        - build-essential
-        - vim
+          - curl
+          - git
+          - wget
+          - nnn
+          - bat
+          - tree
+          - fzf
+          - jq
+          - xclip
+          - coreutils
+          - build-essential
+          - vim
         state: latest
         update_cache: true

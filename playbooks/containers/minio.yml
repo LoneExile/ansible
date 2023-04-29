@@ -5,10 +5,10 @@
   tasks:
     - name: Create MinIO data directory
       ansible.builtin.file:
-        path: "{{ ansible_env.HOME }}/minio/data"
+        path: '{{ ansible_env.HOME }}/minio/data'
         state: directory
-        owner: "{{ ansible_user_id }}"
-        group: "{{ ansible_user_id }}"
+        owner: '{{ ansible_user_id }}'
+        group: '{{ ansible_user_id }}'
         mode: '0755'
 
     - name: Ensure Docker is installed
@@ -26,8 +26,8 @@
           MINIO_ROOT_USER: ROOTNAME
           MINIO_ROOT_PASSWORD: CHANGEME123
         volumes:
-          - "{{ ansible_env.HOME }}/minio/data:/data"
+          - '{{ ansible_env.HOME }}/minio/data:/data'
         published_ports:
-          - "9009:9000"
-          - "9090:9090"
+          - '9009:9000'
+          - '9090:9090'
         command: server /data --console-address ":9090"

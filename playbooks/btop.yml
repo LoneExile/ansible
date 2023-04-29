@@ -11,8 +11,8 @@
 
     - name: Build btop
       command:
-        cmd: "{{ item }}"
-        chdir: "~/btop"
+        cmd: '{{ item }}'
+        chdir: '~/btop'
       loop:
         - 'make'
         - 'make install'
@@ -27,4 +27,3 @@
       ansible.builtin.file:
         path: '~/btop'
         state: absent
-

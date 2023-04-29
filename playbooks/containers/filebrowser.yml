@@ -12,15 +12,15 @@
 
     - name: Create Filebrowser directory
       ansible.builtin.file:
-        path: "{{ ansible_env.HOME }}/filebrowser"
+        path: '{{ ansible_env.HOME }}/filebrowser'
         state: directory
-        owner: "{{ ansible_user_id }}"
-        group: "{{ ansible_user_id }}"
+        owner: '{{ ansible_user_id }}'
+        group: '{{ ansible_user_id }}'
         mode: '0777'
 
     - name: Create database.db file
       ansible.builtin.file:
-        path: "{{ ansible_env.HOME }}/filebrowser/database.db"
+        path: '{{ ansible_env.HOME }}/filebrowser/database.db'
         # owner: "{{ ansible_user_id}}"
         # group: "{{ ansible_user_id }}"
         state: touch
@@ -33,9 +33,8 @@
         state: started
         restart_policy: always
         published_ports:
-          - "8080:80"
+          - '8080:80'
         volumes:
-          - "{{ ansible_env.HOME }}/:/srv"
-          - "{{ ansible_env.HOME }}/filebrowser/database.db:/database.db"
-        user: "{{ ansible_user_uid }}:{{ ansible_user_gid }}"
-
+          - '{{ ansible_env.HOME }}/:/srv'
+          - '{{ ansible_env.HOME }}/filebrowser/database.db:/database.db'
+        user: '{{ ansible_user_uid }}:{{ ansible_user_gid }}'

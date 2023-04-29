@@ -1,9 +1,7 @@
-
 ---
 - name: Install ASDF and Python plugin on Ubuntu
   hosts: all
   tasks:
-
     - name: Install required build dependencies for Python
       apt:
         name:
@@ -27,7 +25,7 @@
       args:
         executable: /usr/bin/zsh
         creates: /home/{{ ansible_user_id }}/.asdf/plugins/python
-      become_user: "{{ ansible_user_id }}"
+      become_user: '{{ ansible_user_id }}'
 
     - name: Install {{ python_version }} python version
       shell: |
@@ -35,7 +33,7 @@
         asdf install python {{ python_version }}
       args:
         executable: /usr/bin/zsh
-      become_user: "{{ ansible_user_id }}"
+      become_user: '{{ ansible_user_id }}'
 
     - name: Set Python version as global
       shell: |
@@ -44,4 +42,4 @@
         pip3 install --upgrade pip
       args:
         executable: /usr/bin/zsh
-      become_user: "{{ ansible_user_id }}"
+      become_user: '{{ ansible_user_id }}'
