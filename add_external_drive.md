@@ -74,6 +74,8 @@ sudo cp /etc/fstab /etc/fstab.backup
 ```
 
 sudo nano /etc/fstab
+# sudo umount /mnt/external-ssd
+# sudo mount -a
 
 ```
 
