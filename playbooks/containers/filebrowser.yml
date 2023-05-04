@@ -33,8 +33,9 @@
         state: started
         restart_policy: always
         published_ports:
-          - '8080:80'
+          - '8081:80'
         volumes:
-          - '{{ ansible_env.HOME }}/:/srv'
+          - '{{ ansible_env.HOME }}/:/srv/home'
+          # - '/mnt/external-ssd/:/srv/external'
           - '{{ ansible_env.HOME }}/filebrowser/database.db:/database.db'
         user: '{{ ansible_user_uid }}:{{ ansible_user_gid }}'
