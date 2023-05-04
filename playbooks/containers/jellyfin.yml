@@ -24,10 +24,8 @@
         volumes:
           - '{{ ansible_env.HOME }}/jellyfin/config:/config'
           - '{{ ansible_env.HOME }}/jellyfin/cache:/cache'
-        mounts:
-          - type: bind
-            source: '{{ ansible_env.HOME }}/jellyfin'
-            target: /media
+          - '{{ ansible_env.HOME }}/jellyfin/media:/media'
+          - '/mnt/:/mnt'
         restart_policy: unless-stopped
 
     - name: Configure GPU memory for hardware acceleration
