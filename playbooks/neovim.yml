@@ -39,3 +39,14 @@
       ansible.builtin.file:
         path: '/tmp/neovim'
         state: absent
+
+    # - name: Install Python 3 Neovim package
+    #   ansible.builtin.pip:
+    #     name: neovim
+    #     state: present
+
+    # - name: Install Node.js Neovim package
+    #   ansible.builtin.npm:
+    #     name: neovim
+    #     state: present
+    #     global: true
