@@ -1,0 +1,15 @@
+---
+- name: Deploy Memos container
+  hosts: all
+  tasks:
+    - name: Deploy Memos container
+      docker_container:
+        name: memos
+        image: ghcr.io/usememos/memos:latest
+        state: started
+        recreate: yes
+        pull: yes
+        ports:
+          - '5230:5230'
+        volumes:
+          - '~/.memos/:/var/opt/memos'
