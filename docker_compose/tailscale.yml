@@ -1,0 +1,26 @@
+# not tested yet
+
+# install tailscale # SUBNET e.g. 192.168.1.0/24
+# sudo docker run -d --name=tailscaled -v /var/lib:/var/lib -v /dev/net/tun:/dev/net/tun --network=host --cap-add=NET_ADMIN --cap-add=NET_RAW --env TS_AUTHKEY=[AUTH KEY] --env TS_EXTRA_ARGS=--advertise-exit-node --env TS_ROUTES=[SUBNET] tailscale/tailscale
+# Asia/Bangkok
+
+version: '3.9'
+
+services:
+  tailscale:
+    image: tailscale/tailscale:latest
+    container_name: tailscale
+    restart: always
+    network_mode: host
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    environment:
+      # - TS_AUTHKEY=[AUTH KEY]
+      # - TS_ROUTES=[SUBNET]
+      - TS_EXTRA_ARGS=--advertise-exit-node
+    env_file:
+      - .env
+    volumes:
+      - /var/lib:/var/lib
+      - /dev/net/tun:/dev/net/tun

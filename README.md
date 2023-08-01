@@ -13,7 +13,6 @@ ansible all --key-file ~/.ssh/ansible -i inventory -m ping --user loneexile
 # gather facts
 ansible all -m gather_facts | grep ansible_distribution
 
-
 # run playbook
 ansible-playbook --ask-become-pass playbooks/main.yml --user loneexile
 
@@ -53,16 +52,9 @@ sudo service ssh restart
 
 # e.g.
 ## ssh username@ip -p1337
-```
 
----
-
-```bash
 ## use nmap to scan network
 sudo nmap -sn 192.168.1.0/24
-
-## install portainer
-docker run -d -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
 
 ## check what is using port 53
 sudo lsof -i :53
@@ -72,11 +64,4 @@ sudo systemctl stop servicename
 
 sudo vi /etc/resolv.conf
 # nameserver 1.1.1.1
-
-
-
-# install tailscale # SUBNET e.g. 192.168.1.0/24
-sudo docker run -d --name=tailscaled -v /var/lib:/var/lib -v /dev/net/tun:/dev/net/tun --network=host --cap-add=NET_ADMIN --cap-add=NET_RAW --env TS_AUTHKEY=[AUTH KEY] --env TS_EXTRA_ARGS=--advertise-exit-node --env TS_ROUTES=[SUBNET] tailscale/tailscale
-# Asia/Bangkok
-
 ```

@@ -20,5 +20,6 @@
 - import_playbook: containers/filebrowser.yml
 - import_playbook: containers/jellyfin.yml
 - import_playbook: containers/watchtower.yml
+- import_playbook: containers/jenkins.yml
 ##
 # - import_playbook: cloudflare.yml

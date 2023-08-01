@@ -1,0 +1,28 @@
+---
+- name: Deploy Jenkins container
+  hosts: all
+  tasks:
+    - name: Ensure Jenkins Docker image is installed
+      ansible.builtin.docker_image:
+        name: jenkins/jenkins:lts-jdk11
+        source: pull
+
+    - name: Create Jenkins data directory
+      ansible.builtin.file:
+        path: '{{ ansible_env.HOME }}/jenkins_home'
+        state: directory
+        owner: '{{ ansible_user_id }}'
+        group: '{{ ansible_user_id }}'
+        mode: '0755'
+
+    - name: Deploy Jenkins Docker container
+      ansible.builtin.docker_container:
+        name: jenkins
+        image: jenkins/jenkins:lts-jdk11
+        state: started
+        restart_policy: on-failure
+        ports:
+          - 8085:8080
+          - 50000:50000
+        volumes:
+          - ~/jenkins_home:/var/jenkins_home
