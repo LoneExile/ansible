@@ -10,5 +10,19 @@ services:
       - 50000:50000
     volumes:
       - ./var/jenkins_home:/var/jenkins_home
-    # networks:
-    #   - jenkins
+    networks:
+      - jenkins_network
+
+  socat:
+    image: alpine/socat
+    container_name: socat
+    command: tcp-listen:2375,fork,reuseaddr unix-connect:/var/run/docker.sock
+    ports:
+      - 2375:2375
+    restart: always
+    networks:
+      - jenkins_network
+
+networks:
+  jenkins_network:
+    name: jenkins_network

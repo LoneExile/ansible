@@ -15,6 +15,11 @@
         group: '{{ ansible_user_id }}'
         mode: '0755'
 
+    - name: Ensure jenkins_network Docker network exists
+      ansible.builtin.docker_network:
+        name: jenkins_network
+        state: present
+
     - name: Deploy Jenkins Docker container
       ansible.builtin.docker_container:
         name: jenkins
@@ -26,3 +31,24 @@
           - 50000:50000
         volumes:
           - ~/jenkins_home:/var/jenkins_home
+        networks:
+    - name: jenkins_network
+
+    - name: Ensure socat Docker image is installed
+      ansible.builtin.docker_image:
+        name: alpine/socat
+        source: pull
+
+    - name: Deploy socat Docker container
+      ansible.builtin.docker_container:
+        name: socat
+        image: alpine/socat
+        state: started
+        restart_policy: always
+        command: tcp-listen:2375,fork,reuseaddr unix-connect:/var/run/docker.sock
+        ports:
+          - 2375:2375
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock
+        networks:
+          - name: jenkins_network
