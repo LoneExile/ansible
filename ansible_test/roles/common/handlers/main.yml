@@ -1,0 +1,6 @@
+---
+# Restart the SSH service whenever its configuration changes
+- name: Restart SSH service
+  service:
+    name: ssh
+    state: restarted

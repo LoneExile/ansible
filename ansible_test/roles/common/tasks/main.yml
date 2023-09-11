@@ -1,0 +1,35 @@
+---
+- name: Install basic packages
+  package:
+    name:
+      - vim
+      - git
+      - htop
+    state: present
+
+- name: Install additional packages
+  package:
+    name: '{{ packages_to_install }}'
+    state: present
+
+- name: Add user
+  user:
+    name: '{{ username }}'
+    shell: /bin/bash
+    create_home: yes
+
+- name: Deploy example.txt to /home/{{ username }}
+  copy:
+    src: example.txt
+    dest: '/home/{{ username }}/example.txt'
+    owner: '{{ username }}'
+    group: '{{ username }}'
+
+- name: Set the timezone
+  timezone:
+    name: '{{ timezone }}'
+
+- name: Set the MOTD
+  template:
+    src: motd.j2
+    dest: /etc/motd

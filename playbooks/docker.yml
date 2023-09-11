@@ -60,13 +60,13 @@
         append: yes
       become: true
 
-    - name: Install Docker Compose using ASDF Python
-      shell: |
-        source /home/{{ ansible_user_id }}/.asdf/asdf.sh
-        pip install docker-compose
-      args:
-        executable: /usr/bin/zsh
-      become_user: '{{ ansible_user_id }}'
+    # - name: Install Docker Compose using ASDF Python
+    #   shell: |
+    #     source /home/{{ ansible_user_id }}/.asdf/asdf.sh
+    #     pip install docker-compose
+    #   args:
+    #     executable: /usr/bin/zsh
+    #   become_user: '{{ ansible_user_id }}'
 
   handlers:
     - name: restart docker

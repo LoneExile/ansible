@@ -1,0 +1,6 @@
+# vars > defaults
+---
+# Variables with higher precedence than defaults
+packages_to_install:
+  - curl
+  - wget

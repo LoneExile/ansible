@@ -1,0 +1,36 @@
+# git clone --depth 1 https://github.com/udhos/update-golang
+# cd update-golang \
+#   && ./update-golang.sh \
+#   && cd .. \
+#   && rm -rf update-golang
+
+---
+- name: Update Golang using udhos/update-golang script
+  hosts: all
+  become: true
+  tasks:
+    - name: Clone the update-golang repository
+      git:
+        repo: 'https://github.com/udhos/update-golang'
+        dest: '/tmp/update-golang'
+        depth: 1
+
+    - name: Run update-golang.sh script
+      command:
+        cmd: './update-golang.sh'
+        chdir: '/tmp/update-golang'
+      become: yes
+
+    - name: Remove the update-golang directory
+      file:
+        path: '/tmp/update-golang'
+        state: absent
+
+    - name: Add Golang to PATH to zsh
+      lineinfile:
+        path: '/home/{{ ansible_user }}/.zshrc'
+        line: 'export PATH=$PATH:/usr/local/go/bin'
+        state: present
+        create: yes
+        insertafter: EOF
+        validate: 'zsh -n %s'
