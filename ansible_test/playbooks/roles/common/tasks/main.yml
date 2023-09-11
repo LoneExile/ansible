@@ -12,11 +12,11 @@
     name: '{{ packages_to_install }}'
     state: present
 
-- name: Add user
-  user:
-    name: '{{ username }}'
-    shell: /bin/bash
-    create_home: yes
+# - name: Add user
+#   user:
+#     name: '{{ username }}'
+#     shell: /bin/bash
+#     create_home: yes
 
 - name: Deploy example.txt to /home/{{ username }}
   copy:
@@ -25,11 +25,11 @@
     owner: '{{ username }}'
     group: '{{ username }}'
 
-- name: Set the timezone
-  timezone:
-    name: '{{ timezone }}'
+# - name: Set the timezone
+#   timezone:
+#     name: '{{ timezone }}'
 
-- name: Set the MOTD
-  template:
-    src: motd.j2
-    dest: /etc/motd
+# - name: Set the MOTD
+#   template:
+#     src: motd.j2
+#     dest: /etc/motd

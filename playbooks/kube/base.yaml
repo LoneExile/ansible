@@ -1,0 +1,11 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: Install kube dev base packages
+      apt:
+        pkg:
+          - kubectx
+          - lvm2 # for rook
+        state: latest
+        update_cache: true

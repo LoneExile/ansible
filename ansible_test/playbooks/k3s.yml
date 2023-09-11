@@ -1,0 +1,16 @@
+---
+- name: Apply common configurations to all hosts
+  hosts: master
+  # hosts: all
+  roles:
+    - common
+
+# - name: Setup Master node
+#   hosts: master
+#   roles:
+#     - webserver
+
+# - name: Setup Worker node
+#   hosts: worker
+#   roles:
+#     - database
