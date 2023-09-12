@@ -1,0 +1,10 @@
+---
+- name: Ensure curl is installed
+  ansible.builtin.package:
+    name: curl
+    state: present
+
+- name: Install k3s using the provided script
+  ansible.builtin.shell: >-
+    curl -sfL https://get.k3s.io |  INSTALL_K3S_CHANNEL={{ k3s_channel }} INSTALL_K3S_EXEC="{{ k3s_exec }}" sh -s -
+  become: true

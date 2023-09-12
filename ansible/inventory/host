@@ -1,0 +1,4 @@
+[master]
+localhost ansible_port=2222
+
+[woker]

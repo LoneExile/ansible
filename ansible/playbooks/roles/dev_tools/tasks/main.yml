@@ -1,0 +1,30 @@
+# - name: Install Base Dev Toos
+#   include_tasks: '{{item}}'
+#   with_first_found:
+#     - tools/btop.yml
+#     - tools/neovim.yml
+#   vars:
+#     action_: "{{ state | default('present')}}"
+
+- name: Check if btop is already installed
+  command:
+    cmd: which btop
+  register: btop_check
+  changed_when: false
+  failed_when: false
+
+- name: Install btop
+  include_tasks: tools/btop.yml
+  when: btop_check.rc != 0
+
+## TODO: add if I want to update neovim
+- name: Check if neovim is already installed
+  command:
+    cmd: which nvim
+  register: neovim_check
+  changed_when: false
+  failed_when: false
+
+- name: Install neovim
+  include_tasks: tools/neovim.yml
+  when: neovim_check.rc != 0

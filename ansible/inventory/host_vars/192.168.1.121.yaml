@@ -1,2 +1,2 @@
 # host_vars > group_vars > playbook > role_defaults > role vars
-nodejs_version: latest
+something: latest

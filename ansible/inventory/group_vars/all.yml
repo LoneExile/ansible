@@ -1,0 +1,4 @@
+username: le
+timezone: UTC
+
+k3s_channel: v1.27.4+k3s1

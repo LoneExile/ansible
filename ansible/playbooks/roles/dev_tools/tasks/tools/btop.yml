@@ -1,0 +1,30 @@
+---
+- name: Clone btop repository
+  ansible.builtin.git:
+    repo: 'https://github.com/aristocratos/btop.git'
+    dest: '/tmp/btop'
+    depth: 1
+
+- name: Build btop
+  command:
+    cmd: '{{ cmd_item }}'
+    chdir: '/tmp/btop'
+  loop:
+    - 'make'
+    - 'make install'
+    - 'make setuid'
+  loop_control:
+    loop_var: cmd_item
+  become: true
+
+- name: Set permissions
+  ansible.builtin.file:
+    path: '/usr/local/bin/btop'
+    mode: '4755'
+  become: true
+
+- name: Cleanup btop repository
+  ansible.builtin.file:
+    path: '/tmp/btop'
+    state: absent
+  become: true

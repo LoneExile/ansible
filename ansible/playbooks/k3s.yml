@@ -3,12 +3,15 @@
   hosts: all
   roles:
     - common
+  become: true
 
 - name: Setup Master node
   hosts: master
   roles:
     - dev_tools
-# - name: Setup Worker node
-#   hosts: worker
-#   roles:
-#     - database
+    - k3s
+
+- name: Setup Worker node
+  hosts: worker
+  roles:
+    - database
