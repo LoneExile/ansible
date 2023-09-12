@@ -1,0 +1,4 @@
+---
+# Default values for common role
+username: le
+timezone: UTC

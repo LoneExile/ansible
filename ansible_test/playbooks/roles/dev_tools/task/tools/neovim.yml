@@ -1,0 +1,52 @@
+---
+- name: Install Neovim
+  hosts: all
+  become: true
+  tasks:
+    - name: Install dependencies
+      ansible.builtin.apt:
+        name:
+          - ninja-build
+          - gettext
+          - libtool
+          - libtool-bin
+          - autoconf
+          - automake
+          - cmake
+          - g++
+          - pkg-config
+          - unzip
+          - curl
+          - doxygen
+        state: present
+        update_cache: yes
+
+    - name: Clone Neovim repository
+      ansible.builtin.git:
+        repo: 'https://github.com/neovim/neovim.git'
+        dest: '/tmp/neovim'
+        depth: 1
+
+    - name: Build and install Neovim
+      command:
+        cmd: '{{ item }}'
+        chdir: '/tmp/neovim'
+      loop:
+        - 'make CMAKE_BUILD_TYPE=Release'
+        - 'make install'
+
+    - name: Cleanup Neovim repository
+      ansible.builtin.file:
+        path: '/tmp/neovim'
+        state: absent
+
+    # - name: Install Python 3 Neovim package
+    #   ansible.builtin.pip:
+    #     name: neovim
+    #     state: present
+
+    # - name: Install Node.js Neovim package
+    #   ansible.builtin.npm:
+    #     name: neovim
+    #     state: present
+    #     global: true

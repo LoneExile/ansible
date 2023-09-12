@@ -1,0 +1,4 @@
+- name: Install basic packages
+  package:
+    name: '{{ packages_to_install }}'
+    state: present

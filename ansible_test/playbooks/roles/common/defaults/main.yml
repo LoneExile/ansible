@@ -2,3 +2,13 @@
 # Default values for common role
 username: le
 timezone: UTC
+packages_to_install:
+  - coreutils
+  - build-essential
+  - vim
+  - git
+  - curl
+  - wget
+  - tree
+  - fzf
+  - jq

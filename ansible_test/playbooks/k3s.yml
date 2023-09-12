@@ -1,15 +1,13 @@
 ---
 - name: Apply common configurations to all hosts
-  hosts: master
-  # hosts: all
+  hosts: all
   roles:
     - common
 
-# - name: Setup Master node
-#   hosts: master
-#   roles:
-#     - webserver
-
+- name: Setup Master node
+  hosts: master
+  roles:
+    - dev_tools
 # - name: Setup Worker node
 #   hosts: worker
 #   roles:
