@@ -14,4 +14,4 @@
 - name: Setup Worker node
   hosts: worker
   roles:
-    - database
+    - k3s

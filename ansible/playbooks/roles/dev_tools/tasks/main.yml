@@ -1,3 +1,9 @@
+- name: Install basic tools packages
+  package:
+    name: '{{ packages_to_install }}'
+    state: present
+  become: true
+
 # - name: Install Base Dev Toos
 #   include_tasks: '{{item}}'
 #   with_first_found:

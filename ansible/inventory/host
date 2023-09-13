@@ -1,4 +1,5 @@
 [master]
 localhost ansible_port=2222
 
-[woker]
+[worker]
+172.20.54.208 ansible_port=2223
