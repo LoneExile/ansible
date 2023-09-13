@@ -1,4 +1,4 @@
-host: master
+worker_group_name: worker
 something: latest
 k3s_exec:
   '--disable servicelb --disable traefik --write-kubeconfig-mode 644 --kube-apiserver-arg

@@ -3,3 +3,4 @@ packages_to_install:
   - xclip
   - bat
   - nnn
+  - nmap

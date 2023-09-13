@@ -15,3 +15,10 @@
   hosts: worker
   roles:
     - k3s
+
+# TODO: 
+# pip: ansible
+# gitmodule?
+
+# TZ='Asia/Bangkok'
+# Generating locales: en_US.UTF-8
