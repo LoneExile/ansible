@@ -3,7 +3,6 @@
   hosts: all
   roles:
     - common
-  become: true
 
 - name: Setup Master node
   hosts: master

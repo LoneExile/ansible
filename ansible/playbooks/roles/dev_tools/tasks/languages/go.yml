@@ -14,13 +14,17 @@
   file:
     path: '/tmp/update-golang'
     state: absent
-  become: true
 
 - name: Get the default shell for the user
   shell:
     cmd: "getent passwd {{ ansible_user }} | awk -F: '{print $7}'"
   register: default_shell
   changed_when: false
+
+- name: Debug ansible_user 
+  debug:
+    var: ansible_user 
+    # ansible_user_id
 
 - name: Add Golang to PATH for zsh
   lineinfile:

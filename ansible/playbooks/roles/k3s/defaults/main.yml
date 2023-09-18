@@ -1,0 +1,5 @@
+---
+# Default values for common role
+packages_to_install:
+  - kubectx
+  - lvm2 # for rook

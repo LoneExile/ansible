@@ -3,6 +3,7 @@
   apt:
     update_cache: yes
     upgrade: 'yes'
+  become: true
 
 # - name: Add user
 #   user:
@@ -18,3 +19,4 @@
   package:
     name: '{{ packages_to_install }}'
     state: present
+  become: true
