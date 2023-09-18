@@ -4,6 +4,32 @@
     state: present
   become: true
 
+- name: Check if golang is already installed
+  command:
+    cmd: which go
+  register: golang_check
+  changed_when: false
+  failed_when: false
+
+- name: Debug golang_check
+  debug:
+    var: golang_check
+
+- name: Install golang
+  include_tasks: languages/go.yml
+  when: golang_check.rc != 0
+
+# - name: Check if k9s is already installed
+#   command:
+#     cmd: which k9s
+#   register: k9s_check
+#   changed_when: false
+#   failed_when: false
+
+# - name: Install k9s
+#   include_tasks: tools/k9s.yml
+#   when: k9s_check.rc != 0
+
 # - name: Install Base Dev Toos
 #   include_tasks: '{{item}}'
 #   with_first_found:

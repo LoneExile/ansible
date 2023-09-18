@@ -1,0 +1,9 @@
+# go install github.com/derailed/k9s@latest
+- name: Install k9s
+  command:
+    cmd: 'go install github.com/derailed/k9s@latest'
+  become: true
+  # become_user: '{{ ansible_user }}'
+  # become_method: sudo
+  args:
+    creates: '/home/{{ ansible_user }}/.local/bin/k9s'

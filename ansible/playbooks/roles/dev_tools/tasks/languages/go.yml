@@ -1,0 +1,42 @@
+- name: Clone the update-golang repository
+  git:
+    repo: 'https://github.com/udhos/update-golang'
+    dest: '/tmp/update-golang'
+    depth: 1
+
+- name: Run update-golang.sh script
+  command:
+    cmd: './update-golang.sh'
+    chdir: '/tmp/update-golang'
+  become: true
+
+- name: Remove the update-golang directory
+  file:
+    path: '/tmp/update-golang'
+    state: absent
+  become: true
+
+- name: Get the default shell for the user
+  shell:
+    cmd: "getent passwd {{ ansible_user }} | awk -F: '{print $7}'"
+  register: default_shell
+  changed_when: false
+
+- name: Add Golang to PATH for zsh
+  lineinfile:
+    path: '/home/{{ ansible_user }}/.zshrc'
+    line: 'export PATH=$PATH:/usr/local/go/bin'
+    state: present
+    create: yes
+    insertafter: EOF
+    validate: 'zsh -n %s'
+  when: "'/usr/bin/zsh' in default_shell.stdout or '/bin/zsh' in default_shell.stdout"
+
+- name: Add Golang to PATH for bash
+  lineinfile:
+    path: '/home/{{ ansible_user }}/.bashrc'
+    line: 'export PATH=$PATH:/usr/local/go/bin'
+    state: present
+    create: yes
+    insertafter: EOF
+  when: "'/usr/bin/bash' in default_shell.stdout or '/bin/bash' in default_shell.stdout"
