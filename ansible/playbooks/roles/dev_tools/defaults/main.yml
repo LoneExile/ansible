@@ -4,3 +4,4 @@ packages_to_install:
   - bat
   - nnn
   - nmap
+  - python3-pip

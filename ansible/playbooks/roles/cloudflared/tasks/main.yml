@@ -1,0 +1,34 @@
+---
+- name: Print ansible_distribution_release
+  debug:
+    msg: 'The ansible_distribution_release is {{ ansible_distribution_release }}'
+
+- name: Ensure /usr/share/keyrings directory exists
+  file:
+    path: /usr/share/keyrings
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Add cloudflare GPG key
+  ansible.builtin.get_url:
+    url: https://pkg.cloudflare.com/cloudflare-main.gpg
+    dest: /usr/share/keyrings/cloudflare-main.gpg
+    mode: '0644'
+  become: true
+
+- name: Add cloudflared repo to apt repositories
+  ansible.builtin.copy:
+    content:
+      'deb [signed-by=/usr/share/keyrings/cloudflare-main.gpg] https://pkg.cloudflare.com/cloudflared {{
+      ansible_distribution_release }} main'
+    dest: /etc/apt/sources.list.d/cloudflared.list
+    mode: '0644'
+  become: true
+
+- name: Update apt and install cloudflared
+  ansible.builtin.apt:
+    update_cache: yes
+    name: cloudflared
+    state: present
+  become: true

@@ -9,15 +9,16 @@
   roles:
     - dev_tools
     - k3s
+    - cloudflared
+    - krew
 
 - name: Setup Worker node
   hosts: worker
   roles:
     - k3s
+###
 
-# TODO: 
-# pip: ansible
-# gitmodule?
+# TODO:
 
 # TZ='Asia/Bangkok'
 # Generating locales: en_US.UTF-8

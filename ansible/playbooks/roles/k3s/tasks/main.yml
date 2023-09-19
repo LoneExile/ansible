@@ -15,12 +15,28 @@
     path: /usr/local/bin/k3s
   register: k3s_binary
 
+# - name: Install k3s master nodes using the provided script
+#   ansible.builtin.shell: >-
+#     curl -sfL https://get.k3s.io | INSTALL_K3S_CHANNEL={{ k3s_channel }} INSTALL_K3S_EXEC="{{ k3s_exec }}" sh -s -
+#   become: true
+#   when: inventory_hostname in groups['master'] and not k3s_binary.stat.exists
 
-- name: Install k3s master nodes using the provided script
-  ansible.builtin.shell: >-
-    curl -sfL https://get.k3s.io | INSTALL_K3S_CHANNEL={{ k3s_channel }} INSTALL_K3S_EXEC="{{ k3s_exec }}" sh -s -
-  become: true
-  when: inventory_hostname in groups['master'] and not k3s_binary.stat.exists
+# - name: Get K3S_TOKEN from master node
+#   delegate_to: '{{ groups[master_group_name][0] }}'
+#   ansible.builtin.shell: cat /var/lib/rancher/k3s/server/node-token
+#   register: master_token_result
+#   run_once: true
+#   become: true
+
+# - name: "Install k3s on worker nodes {{hostvars[groups['master'][0]]['ansible_host']}}"
+#   ansible.builtin.shell: >-
+#     curl -sfL https://get.k3s.io | INSTALL_K3S_CHANNEL={{ k3s_channel }}  K3S_URL=https://{{
+#     hostvars[groups['master'][0]]['ansible_host'] }}:6443 K3S_TOKEN={{ master_token_results.results[0].stdout }} sh -s -
+#   # ansible.builtin.shell: >-
+#   #   echo hello
+#   become: true
+
+###############################################################################################
 
 # - name: Get K3S_TOKEN from all master nodes
 #   delegate_to: '{{ item }}'
@@ -30,28 +46,6 @@
 #   become: true
 #   run_once: true
 #   when: inventory_hostname in groups['worker']
-
-- name: Get K3S_TOKEN from master node
-  delegate_to: "{{ groups[master_group_name][0] }}"
-  ansible.builtin.shell: cat /var/lib/rancher/k3s/server/node-token
-  register: master_token_result
-  run_once: true
-  become: true
-
-- name: "Install k3s on worker nodes {{hostvars[groups['master'][0]]['ansible_host']}}"
-  ansible.builtin.shell: >-
-    curl -sfL https://get.k3s.io | INSTALL_K3S_CHANNEL={{ k3s_channel }}  K3S_URL=https://{{
-    hostvars[groups['master'][0]]['ansible_host'] }}:6443 K3S_TOKEN={{ master_token_results.results[0].stdout }} sh -s -
-  # ansible.builtin.shell: >-
-  #   echo hello
-  become: true
-
-# when: inventory_hostname in groups['worker'] and not k3s_binary.stat.exists
-# - name: Reboot machine after installing k3s
-#   ansible.builtin.reboot:
-#   become: true
-
-##
 
 # - name: Clean up k3s master nodes installation files
 #   ansible.builtin.shell: >-
@@ -65,3 +59,45 @@
 #   become: true
 #   when: inventory_hostname in groups['worker'] and k3s_binary.stat.exists
 
+###############################################################################################
+
+- name: Initialize worker counter
+  set_fact:
+    worker_counter: 0
+  run_once: true
+  when: inventory_hostname in groups['worker']
+
+- name: Check if worker hostname is same as master and set new hostname
+  block:
+    - name: Set new hostname for worker
+      set_fact:
+        new_hostname: 'worker_{{ worker_counter }}'
+      when: inventory_hostname == hostvars[groups['master'][0]]['ansible_host']
+
+    - name: Apply new hostname
+      ansible.builtin.hostname:
+        name: '{{ new_hostname }}'
+      when: new_hostname is defined
+
+    - name: Increment worker counter
+      set_fact:
+        worker_counter: '{{ worker_counter + 1 }}'
+  when: inventory_hostname in groups['worker']
+
+- name: Install k3s master nodes using the provided script
+  ansible.builtin.shell: >-
+    curl -sfL https://get.k3s.io | INSTALL_K3S_CHANNEL={{ k3s_channel }} INSTALL_K3S_EXEC="{{ k3s_exec }}" sh -s -
+  become: true
+  when: inventory_hostname in groups['master'] and not k3s_binary.stat.exists
+
+- name: Get K3S_TOKEN from master node
+  delegate_to: '{{ groups[master_group_name][0] }}'
+  ansible.builtin.shell: cat /var/lib/rancher/k3s/server/node-token
+  register: master_token_result
+  run_once: true
+
+- name: "Install k3s on worker nodes {{hostvars[groups['master'][0]]['ansible_host']}}"
+  ansible.builtin.shell: >-
+    curl -sfL https://get.k3s.io | INSTALL_K3S_CHANNEL={{ k3s_channel }}  K3S_URL=https://{{
+    hostvars[groups['master'][0]]['ansible_host'] }}:6443 K3S_TOKEN={{ master_token_results.results[0].stdout }} sh -s -
+  become: true

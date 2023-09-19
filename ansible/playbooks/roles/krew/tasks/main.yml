@@ -1,0 +1,39 @@
+- name: Determine OS and ARCH for krew installation
+  ansible.builtin.shell: |
+    OS="$(uname | tr '[:upper:]' '[:lower:]')"
+    ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')"
+    echo "${OS}_${ARCH}"
+  register: os_arch_result
+  changed_when: false
+
+- name: Set OS_ARCH fact
+  set_fact:
+    os_arch: '{{ os_arch_result.stdout }}'
+
+- name: Download and install krew
+  ansible.builtin.shell: |
+    set -x
+    cd "$(mktemp -d)"
+    KREW="krew-{{ os_arch }}"
+    curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/${KREW}.tar.gz"
+    tar zxvf "${KREW}.tar.gz"
+    ./"${KREW}" install krew
+
+## TODO: add krew to PATH in .zshrc
+- name: Add krew to PATH in .bashrc
+  ansible.builtin.lineinfile:
+    path: '{{ ansible_env.HOME }}/.bashrc'
+    line: 'export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"'
+    state: present
+
+- name: Update krew
+  ansible.builtin.command:
+    cmd: kubectl krew update
+
+- name: Install ctx using krew
+  ansible.builtin.command:
+    cmd: kubectl krew install ctx
+
+- name: Install ns using krew
+  ansible.builtin.command:
+    cmd: kubectl krew install ns
