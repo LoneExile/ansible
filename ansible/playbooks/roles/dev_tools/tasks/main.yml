@@ -4,20 +4,20 @@
     state: present
   become: true
 
-- name: Check if golang is already installed
-  command:
-    cmd: which go
-  register: golang_check
-  changed_when: false
-  failed_when: false
+# - name: Check if golang is already installed
+#   command:
+#     cmd: which go
+#   register: golang_check
+#   changed_when: false
+#   failed_when: false
 
-- name: Debug golang_check
-  debug:
-    var: golang_check
+# - name: Debug golang_check
+#   debug:
+#     var: golang_check
 
-- name: Install golang
-  include_tasks: languages/go.yml
-  when: golang_check.rc != 0
+# - name: Install golang
+#   include_tasks: languages/go.yml
+#   when: golang_check.rc != 0
 
 # - name: Check if k9s is already installed
 #   command:
@@ -48,15 +48,14 @@
 - name: Install btop
   include_tasks: tools/btop.yml
   when: btop_check.rc != 0
-
 ## TODO: add if I want to update neovim
-- name: Check if neovim is already installed
-  command:
-    cmd: which nvim
-  register: neovim_check
-  changed_when: false
-  failed_when: false
+# - name: Check if neovim is already installed
+#   command:
+#     cmd: which nvim
+#   register: neovim_check
+#   changed_when: false
+#   failed_when: false
 
-- name: Install neovim
-  include_tasks: tools/neovim.yml
-  when: neovim_check.rc != 0
+# - name: Install neovim
+#   include_tasks: tools/neovim.yml
+#   when: neovim_check.rc != 0

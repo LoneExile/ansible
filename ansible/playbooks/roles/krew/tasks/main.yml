@@ -1,3 +1,5 @@
+## TODO: check if installed
+
 - name: Determine OS and ARCH for krew installation
   ansible.builtin.shell: |
     OS="$(uname | tr '[:upper:]' '[:lower:]')"
@@ -19,21 +21,25 @@
     tar zxvf "${KREW}.tar.gz"
     ./"${KREW}" install krew
 
-## TODO: add krew to PATH in .zshrc
 - name: Add krew to PATH in .bashrc
   ansible.builtin.lineinfile:
     path: '{{ ansible_env.HOME }}/.bashrc'
     line: 'export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"'
     state: present
 
-- name: Update krew
-  ansible.builtin.command:
-    cmd: kubectl krew update
+- name: Add krew to PATH in .zshrc
+  ansible.builtin.lineinfile:
+    path: '{{ ansible_env.HOME }}/.zshrc'
+    line: 'export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"'
+    state: present
+# - name: Update krew
+#   ansible.builtin.command:
+#     cmd: /usr/local/bin/kubectl krew update
 
-- name: Install ctx using krew
-  ansible.builtin.command:
-    cmd: kubectl krew install ctx
+# - name: Install ctx using krew
+#   ansible.builtin.command:
+#     cmd: /usr/local/bin/kubectl krew install ctx
 
-- name: Install ns using krew
-  ansible.builtin.command:
-    cmd: kubectl krew install ns
+# - name: Install ns using krew
+#   ansible.builtin.command:
+#     cmd: /usr/local/bin/kubectl krew install ns

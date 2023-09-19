@@ -10,7 +10,8 @@
     - dev_tools
     - k3s
     - cloudflared
-    - krew
+
+    # - krew
 
 - name: Setup Worker node
   hosts: worker
