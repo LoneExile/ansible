@@ -21,7 +21,7 @@ for ip in $(awk '/^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$/ {print $1}' $INVENTORY_FILE)
         # shellcheck disable=2034
         EXPECT_OUTPUT=$(expect <<EOF
         set timeout 10
-        spawn ssh-copy-id -i $HOME/.ssh/id_rsa.pub ${hostname}@${ip}
+        spawn ssh-copy-id -i $HOME/.ssh/ansible.pub ${hostname}@${ip}
         expect {
             "password:" {
                 send "$password\r"
@@ -43,6 +43,7 @@ EOF
             echo "SSH key successfully copied to ${hostname}@${ip}."
         fi
     else
-        ssh-copy-id -i "$HOME/.ssh/id_rsa.pub" "${hostname}@${ip}"
+        # ssh-copy-id -i $HOME/.ssh/id_rsa.pub ${hostname}@${ip}
+        ssh-copy-id -i "$HOME/.ssh/ansible.pub" "${hostname}@${ip}"
     fi
 done
