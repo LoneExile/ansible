@@ -108,3 +108,11 @@
     groups[master_group_name][0] }}:6443 K3S_TOKEN={{ master_token_result.stdout }} sh -s -
   become: true
   when: inventory_hostname in groups['worker'] and not k3s_binary.stat.exists
+
+- name: Copy k3s config file to local machine
+  ansible.builtin.fetch:
+    src: /etc/rancher/k3s/k3s.yaml
+    dest: '{{ ansible_env.HOME }}/.kube/config'
+    flat: yes
+  become: true
+  when: inventory_hostname in groups['master'] and k3s_binary.stat.exists

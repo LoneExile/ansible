@@ -1,4 +1,11 @@
 ---
+- name: Check if cloudflared is already installed
+  ansible.builtin.shell: |
+    cloudflared --version
+  register: cloudflared_check
+  changed_when: false
+  failed_when: false
+
 - name: Print ansible_distribution_release
   debug:
     msg: 'The ansible_distribution_release is {{ ansible_distribution_release }}'
@@ -9,6 +16,7 @@
     state: directory
     mode: '0755'
   become: true
+  when: cloudflared_check.rc != 0
 
 - name: Add cloudflare GPG key
   ansible.builtin.get_url:
@@ -16,6 +24,7 @@
     dest: /usr/share/keyrings/cloudflare-main.gpg
     mode: '0644'
   become: true
+  when: cloudflared_check.rc != 0
 
 - name: Add cloudflared repo to apt repositories
   ansible.builtin.copy:
@@ -25,6 +34,7 @@
     dest: /etc/apt/sources.list.d/cloudflared.list
     mode: '0644'
   become: true
+  when: cloudflared_check.rc != 0
 
 - name: Update apt and install cloudflared
   ansible.builtin.apt:
@@ -32,3 +42,4 @@
     name: cloudflared
     state: present
   become: true
+  when: cloudflared_check.rc != 0

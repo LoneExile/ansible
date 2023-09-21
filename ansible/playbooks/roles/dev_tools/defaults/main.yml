@@ -5,3 +5,4 @@ packages_to_install:
   - nnn
   - nmap
   - python3-pip
+  - tmux

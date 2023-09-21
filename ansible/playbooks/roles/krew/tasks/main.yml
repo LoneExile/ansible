@@ -1,5 +1,12 @@
 ## TODO: check if installed
 
+- name: Check if krew is already installed
+  ansible.builtin.shell: |
+    kubectl krew version
+  register: krew_check
+  changed_when: false
+  failed_when: false
+
 - name: Determine OS and ARCH for krew installation
   ansible.builtin.shell: |
     OS="$(uname | tr '[:upper:]' '[:lower:]')"
@@ -7,10 +14,12 @@
     echo "${OS}_${ARCH}"
   register: os_arch_result
   changed_when: false
+  when: krew_check.rc != 0
 
 - name: Set OS_ARCH fact
   set_fact:
     os_arch: '{{ os_arch_result.stdout }}'
+  when: krew_check.rc != 0
 
 - name: Download and install krew
   ansible.builtin.shell: |
@@ -20,18 +29,21 @@
     curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/${KREW}.tar.gz"
     tar zxvf "${KREW}.tar.gz"
     ./"${KREW}" install krew
+  when: krew_check.rc != 0
 
 - name: Add krew to PATH in .bashrc
   ansible.builtin.lineinfile:
     path: '{{ ansible_env.HOME }}/.bashrc'
     line: 'export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"'
     state: present
+  when: krew_check.rc != 0
 
 - name: Add krew to PATH in .zshrc
   ansible.builtin.lineinfile:
     path: '{{ ansible_env.HOME }}/.zshrc'
     line: 'export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"'
     state: present
+  when: krew_check.rc != 0
 # - name: Update krew
 #   ansible.builtin.command:
 #     cmd: /usr/local/bin/kubectl krew update
