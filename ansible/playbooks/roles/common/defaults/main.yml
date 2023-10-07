@@ -3,6 +3,7 @@
 packages_to_install:
   - coreutils
   - build-essential
+  - software-properties-common
   - vim
   - git
   - curl

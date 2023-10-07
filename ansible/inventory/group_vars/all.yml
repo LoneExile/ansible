@@ -1,6 +1,6 @@
 username: le
 timezone: UTC
 
-k3s_channel: v1.27.4+k3s1
+k3s_channel: v1.28.2+k3s1
 master_group_name: master
 worker_group_name: worker

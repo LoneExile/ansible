@@ -1,0 +1,14 @@
+---
+- name: Ensure /var/lib/rook is absent
+  file:
+    path: /var/lib/rook
+    state: absent
+  become: true
+
+- name: Reboot the host
+  reboot:
+  become: true
+# - name: Shutdown all hosts
+#   ansible.builtin.command:
+#     cmd: shutdown -h now
+#   become: true

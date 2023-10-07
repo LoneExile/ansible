@@ -38,12 +38,13 @@
     state: present
   when: krew_check.rc != 0
 
-- name: Add krew to PATH in .zshrc
-  ansible.builtin.lineinfile:
-    path: '{{ ansible_env.HOME }}/.zshrc'
-    line: 'export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"'
-    state: present
-  when: krew_check.rc != 0
+# - name: Add krew to PATH in .zshrc
+#   ansible.builtin.lineinfile:
+#     path: '{{ ansible_env.HOME }}/.zshrc'
+#     line: 'export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"'
+#     state: present
+#   when: krew_check.rc != 0
+
 # - name: Update krew
 #   ansible.builtin.command:
 #     cmd: /usr/local/bin/kubectl krew update
