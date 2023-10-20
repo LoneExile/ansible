@@ -1,0 +1,18 @@
+- name: Check if Scoop is installed
+  win_command: 'scoop version'
+  register: scoop_result
+  ignore_errors: true
+
+- name: Install Scoop
+  win_command: 'iex (new-object net.webclient).downloadstring(''https://get.scoop.sh'')'
+  when: scoop_result.rc != 0
+
+- name: Install package using Scoop
+  win_command: 'scoop install git'
+  args:
+    creates: "C:\\ProgramData\\scoop\\apps\\git\\current\\cmd\\git.exe"
+
+- name: Install package using winget
+  win_command: 'winget install vscode'
+  args:
+    creates: "C:\\Program Files\\Microsoft VS Code\\Code.exe"

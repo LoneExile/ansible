@@ -1,0 +1,15 @@
+[master]
+localhost ansible_port=2222
+
+[worker]
+localhost ansible_port=2222
+
+[windows]
+windows-node ansible_host=172.16.0.128
+
+[windows:vars]
+ansible_connection=winrm
+ansible_winrm_server_cert_validation=ignore
+ansible_user=Administrator
+ansible_password=SecretPassword
+

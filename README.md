@@ -2,6 +2,23 @@
 
 Personal playbook configuration for my development evironment.
 
+## Ansible
+
+```bash
+# install ansible
+pip install ansible
+
+# dependencies for windows
+pip install pywinrm
+# yay -S python-pywinrm
+```
+
+## Create a new role
+
+```bash
+ansible-galaxy init ansible/roles/common
+```
+
 ```bash
 ansible-galaxy collection install community.docker
 

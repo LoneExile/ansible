@@ -1,0 +1,4 @@
+- name: Apply common configurations to all hosts
+  hosts: windows
+  roles:
+    - windows
